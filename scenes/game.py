@@ -116,4 +116,14 @@ def gameLoop():
 
 
         clock.tick(40)
-        
+
+pygame.mixer.music.load("assets/musica/musica.mp3")
+pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(1)
+jugar=True
+while jugar:
+    for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            jugar=False
+    pygame.display.flip()
+pygame.quit()
