@@ -17,7 +17,7 @@ import random
 from pygame.locals import (RLEACCEL)
 
 class Tiempo(pygame.sprite.Sprite):
-    def __init__(self, pos=(10,10), letra="lucidaconsole",tamaño=40 ,color=(255,255,255)):
+    def __init__(self, pos=(900,10), letra="algerian",tamaño=40 ,color=(255,255,255)):
         self.pos= pos
         self.letra=pygame.font.SysFont(letra,tamaño) 
         self.color= color
@@ -31,7 +31,7 @@ class Tiempo(pygame.sprite.Sprite):
         minutero=tiempo//60
         segundero=tiempo%60
 
-        #creamos el "texto" que queremos mostrar en formato mm:ss
+        #creamos el "texto" que queremos mostrar
         reloj=f"{minutero}:{segundero}"
         #dibujar la imagen
         imagen=self.letra.render(reloj,True,self.color)

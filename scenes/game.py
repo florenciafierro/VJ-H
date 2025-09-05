@@ -30,6 +30,7 @@ def gameLoop():
 
     pygame.init()
 
+
     ''' Creamos y editamos la ventana de pygame (escena) '''
     ''' 1.-definir el tamaño de la ventana'''
     SCREEN_WIDTH = 1000
@@ -40,6 +41,10 @@ def gameLoop():
     background_image = pygame.image.load("assets/pixelBackground.jpg").convert()
 
     ''' Preparamos el gameloop '''
+    #creamos las imagenes de los corazones, convert_alpha le quita el fondo negro a la imagen
+    corazon=pygame.image.load("assets/corazon.png").convert_alpha()
+    corazon=pygame.transform.scale(corazon,(50,50))
+
     ''' 1.- creamos el reloj del juego'''
 
     clock = pygame.time.Clock()
@@ -60,8 +65,13 @@ def gameLoop():
     mira=Mirilla(SCREEN_WIDTH,SCREEN_HEIGHT)
     all_sprites.add(mira)
 
-
+    #creamos el cronometro
     cronometro= Tiempo()
+
+    #creamos el puntaje
+    puntaje=0
+    letra_puntaje= pygame.font.SysFont("algerian", 25)
+
 
     ''' hora de hacer el gameloop '''
     # variable booleana para manejar el loop
@@ -80,8 +90,14 @@ def gameLoop():
         for projectile in player.projectiles:
             screen.blit(projectile.surf,projectile.rect)
         
+        #tenemos en pantalla la cantidad de vidas que tiene el jugador, las imagenes las separamos entre 50 
+        for i in range(player.vidas):
+            screen.blit(corazon, (10+i*50,10))
+        
         # POR HACER (2.5): Eliminar bug si colisiona con proyectil
-        pygame.sprite.groupcollide(enemies,player.projectiles,True,True)
+        #tomamos el sistema de eliminaciones y lo vamos sumando al puntaje cada vez que matamos a un enemigo
+        eliminaciones=pygame.sprite.groupcollide(enemies,player.projectiles,True,True)
+        puntaje+=len(eliminaciones)
         
         pressed_keys = pygame.key.get_pressed()
         player.update(pressed_keys)
@@ -89,13 +105,24 @@ def gameLoop():
         #actualizar la mira con el movimiento
         mira.update()
         
-        if pygame.sprite.spritecollideany(player, enemies):
-            player.kill()
-            running = False
+        choque= pygame.sprite.spritecollideany(player, enemies)
+        if choque:
+            #matamos al enemigo con el que choca y restamos una vida
+            choque.kill()
+            player.perder_vida()
+
+            if player.vidas<=0:
+                #si tiene 0 vidad se termina el juego
+                player.kill()
+                running = False
             #si se muere, se empieza el loop de la escena de muerte
-            gameOver()
+                gameOver()
             
         cronometro.imagen(screen)
+
+        #dibujamos el puntaje abajo de los corazones
+        score=letra_puntaje.render(f"Score: {puntaje}", True, (255,255,255))
+        screen.blit(score, (10, 60))
 
         pygame.display.flip()
         

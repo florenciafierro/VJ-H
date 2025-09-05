@@ -32,6 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
+        self.vidas=3
         
         # POR HACER (2.3): Crear lista de proyectiles
         self.projectiles=pygame.sprite.Group()
@@ -80,5 +81,9 @@ class Player(pygame.sprite.Sprite):
 
         #actualizamos el tick del ultimo disparo
         self.ultimo_tiro=tiempo_actual
+    
+    def perder_vida(self):
+        self.vidas-=1
+        
 
         
