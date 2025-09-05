@@ -23,6 +23,8 @@ from elements.mira import Mirilla
 
 from scenes.muerte import gameOver
 
+from elements.cronometro import Tiempo
+
 def gameLoop():
     ''' iniciamos los modulos de pygame'''
 
@@ -58,6 +60,9 @@ def gameLoop():
     mira=Mirilla(SCREEN_WIDTH,SCREEN_HEIGHT)
     all_sprites.add(mira)
 
+
+    cronometro= Tiempo()
+
     ''' hora de hacer el gameloop '''
     # variable booleana para manejar el loop
     running = True
@@ -90,7 +95,8 @@ def gameLoop():
             #si se muere, se empieza el loop de la escena de muerte
             gameOver()
             
-        
+        cronometro.imagen(screen)
+
         pygame.display.flip()
         
         # iteramos sobre cada evento en la cola

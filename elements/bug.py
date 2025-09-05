@@ -41,4 +41,3 @@ class Enemy(pygame.sprite.Sprite):
             self.kill()
 
 
-#hola
